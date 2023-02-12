@@ -105,3 +105,7 @@ deploy:
   type: git
   repository: https://github.com/FansaOrz/FansaOrz.github.io
   branch: main
+
+markdown:
+  plugins:
+    - "@traptitech/markdown-it-katex"
