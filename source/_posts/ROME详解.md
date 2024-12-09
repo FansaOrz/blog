@@ -1,5 +1,5 @@
 ---
-title: ROME详解
+title: ROME学习笔记
 date: 2024-12-07 22:43:27
 tags: [视觉重建, 机器学习, MLP, 计算机视觉, 论文解读]
 math: true
