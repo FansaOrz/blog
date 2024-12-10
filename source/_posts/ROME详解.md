@@ -6,7 +6,9 @@ math: true
 categories: 视觉重建
 excerpt: "RoMe: Towards Large Scale Road Surface Reconstruction via Mesh Representation"
 ---
+
 # 相关文档
+
 - 代码链接：https://github.com/DRosemei/RoMe
 - 论文链接：https://arxiv.org/pdf/2306.11368
 
@@ -22,10 +24,11 @@ excerpt: "RoMe: Towards Large Scale Road Surface Reconstruction via Mesh Represe
   - 使用 waypoint 采样的方法，来降低内存和时间复杂度
 
 # Approaches
+
 <p align="center">{% asset_img method.png method %}</p>
 
-
-- 主要分成三个部分，waypoints 采样、Mesh初始化和优化
+- 主要分成三个部分，waypoints 采样、Mesh 初始化和优化
 - 常用的术语和定义为：
   - 3D point cloud：点云，包含了空间中的所有点，每个点都有对应的坐标和颜色信息
-## 
+
+##
