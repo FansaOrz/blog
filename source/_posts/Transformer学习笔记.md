@@ -9,6 +9,16 @@ excerpt: Transformer介绍
 
 # 先验知识
 
+## Embedding
+
+- 词嵌入(Embedding)是自然语言处理中一个重要的预处理技术。它将词语转换为固定维度的向量表示，使得语义信息能够被模型所利用。简单来说，就是**用一个数值向量“表示”一个对象（object）的方法。**
+
+== 插图 ==
+
+- 原理：讲练数据映射为连续向量，捕捉潜在关系
+- 方法：使用神经网络中的 Embedding 层，训练得到数据的向量表示
+- 作用：提升模型能力，增强泛化能力，降低计算成本
+
 ## 迁移学习
 
 - 迁移学习(Transfer Learning)是深度学习领域的一个重要研究方向。它通过利用已有模型的预训练参数来解决新任务的学习问题。
@@ -123,6 +133,44 @@ def scaled_dot_product_attention(query, key, value, query_mask=None, key_mask=No
 
 - **注意！** 上面的做法会带来一个问题：当$Q$和$K$序列相同时，注意力机制会为上下文中的**相同单词**分配非常大的分数（点积为 1），而在实践中，**相关词往往比相同词更重要**。因此，多头注意力 (Multi-head Attention) 出现了！
 
+### Multi-Head Attention
+
+- Multi-Head Attention 首先通过线性映射将$Q, K, V$序列映射到特征空间，每一组线性投影后的向量表示称为一个头（head）没然后再每组映射后的序列上，在应用 Scaled Dot-Product Attention：
+
+==插图==
+
+- 每个注意力头负责关注某一方面的语义相似性，多个头就可以让模型同时关注多个方面。因此与简单的 Scaled Dot-Product Attention 相比，Multi-Head Attention 能够捕获到更复杂的特征信息。
+- Multi-Head Attention 公式：
+
+$$
+head_i = \operatorname{Attention}(QW_i^Q, KW_i^K, VW_i^V)\\\
+
+\operatorname{MultiHead}(Q, K, V)=\underbrace{\operatorname{Concat}(\text{head}_1, \text{head}_2, \cdots, \text{head}_h)}_{\text{concatenated heads}}
+$$
+
+- 其中$W_i^Q, W_i^K, W_i^V$是线性映射矩阵，$\text{head}_i$表示第$i$个注意力头的输出，$\text{Concat}$表示将多个头的输出拼接起来。**所谓的“多头”，其实就是多做几次 Scaled Dot-Product Attention，然后将结果拼接起来。**
+
+## Transformer Encoder
+
+<p align="center">{% asset_img transformers_blocks.svg Transformer结构 %}</p>
+
+### The Feed-Forward Layer
+
+- 前馈神经网络（Feed-Forward Neural Network，FFN）是 Transformer 结构中最基础的部分。它由两个全连接层组成。常见的做法是让第一层的维度是词向量大小的 4 倍，然后以 GELU 作为激活函数。
+
+### Layer Normalization
+
+- Layer Normalization 负责将一批（batch）输入中的每一个都标准化为均值为零且具有单位方差；Skip Connection 则是将前一层的输出直接加到当前层的输入上。
+
+- 向 Transformer Encoder/Decoder 中添加 Layer Normalization 目前共有两种做法：
+
+== 插图 ==
+
+  - Post layer normalization：Transformer 论文中使用的方式，将 Layer normalization 放在 Skip Connections 之间。 但是因为梯度可能会发散，这种做法很难训练，还需要结合学习率预热 (learning rate warm-up) 等技巧；
+  
+  - Pre layer normalization：目前主流的做法，将 Layer Normalization 放置于 Skip Connections 的范围内。这种做法通常训练过程会更加稳定，并且不需要任何学习率预热。
+
 # 参考文档
 
+- [神经网络算法 - 一文搞懂 Embedding（嵌入）](https://mp.weixin.qq.com/s?__biz=MzkzMTEzMzI5Ng==&mid=2247485705&idx=1&sn=9a17507d7df772170e96f1b63654e7fb)
 - [transformers 快速入门](https://transformers.run/c1/transformer/#transformer-%E7%9A%84%E7%BB%93%E6%9E%84)
