@@ -1,6 +1,6 @@
 ---
 title: 2DGS学习笔记
-date: 2024-12-07 22:23:29
+date: 2024-05-11 22:23:29
 tags: [视觉重建, 机器学习, MLP, 论文解读]
 math: true
 categories: 视觉重建

@@ -1,6 +1,6 @@
 ---
 title: CUDA编程基础
-date: 2024-12-07 22:27:06
+date: 2024-04-20 22:27:06
 tags: [机器学习, CUDA, C++, 编程语言]
 math: true
 categories: 编程

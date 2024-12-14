@@ -1,7 +1,7 @@
 ---
 title: Transformer学习笔记
-date: 2024-12-09 22:19:30
-tags: [机器学习, 深度学习, 计算机视觉, 论文解读]
+date: 2024-08-31 22:19:30
+tags: [机器学习, 深度学习, 计算机视觉, 论文解读, Python, Pytorch]
 math: true
 categories: 机器学习
 excerpt: Transformer介绍
@@ -13,9 +13,10 @@ excerpt: Transformer介绍
 
 - 词嵌入(Embedding)是自然语言处理中一个重要的预处理技术。它将词语转换为固定维度的向量表示，使得语义信息能够被模型所利用。简单来说，就是**用一个数值向量“表示”一个对象（object）的方法。**
 
-== 插图 ==
+<p align="center">{% asset_img embedding.webp embedding %}</p>
 
-- 原理：讲练数据映射为连续向量，捕捉潜在关系
+
+- 原理：将离散数据映射为连续向量，捕捉潜在关系
 - 方法：使用神经网络中的 Embedding 层，训练得到数据的向量表示
 - 作用：提升模型能力，增强泛化能力，降低计算成本
 
@@ -164,7 +165,7 @@ $$
 
 - 向 Transformer Encoder/Decoder 中添加 Layer Normalization 目前共有两种做法：
 
-== 插图 ==
+<p align="center">{% asset_img arrangements_of_layer_normalization.png arrangements_of_layer_normalization %}</p>
 
   - Post layer normalization：Transformer 论文中使用的方式，将 Layer normalization 放在 Skip Connections 之间。 但是因为梯度可能会发散，这种做法很难训练，还需要结合学习率预热 (learning rate warm-up) 等技巧；
   

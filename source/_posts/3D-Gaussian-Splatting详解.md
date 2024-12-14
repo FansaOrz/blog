@@ -1,6 +1,6 @@
 ---
 title: 3D Gaussian Splatting学习笔记
-date: 2024-12-07 13:59:38
+date: 2024-04-13 13:59:38
 tags: [视觉重建, 机器学习, MLP, 计算机视觉, 论文解读]
 math: true
 categories: 视觉重建
