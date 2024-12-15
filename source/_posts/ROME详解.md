@@ -12,6 +12,9 @@ excerpt: "RoMe: Towards Large Scale Road Surface Reconstruction via Mesh Represe
 - 代码链接：https://github.com/DRosemei/RoMe
 - 论文链接：https://arxiv.org/pdf/2306.11368
 
+<p align="center">{% asset_img rome.png  %}</p>
+
+
 # Introduction
 
 - 提出 waypioint 采样方法，每个只渲染局部的区域，然后再合并到一起
