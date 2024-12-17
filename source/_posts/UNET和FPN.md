@@ -1,6 +1,6 @@
 ---
 title: UNET和FPN
-date: 2024-12-15 10:39:39
+date: 2024-08-10 10:39:39
 tags: [机器学习, 基础知识, 数学, 神经网络, 深度学习]
 math: true
 categories: 机器学习
