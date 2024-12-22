@@ -109,3 +109,7 @@ deploy:
 markdown:
   plugins:
     - "@traptitech/markdown-it-katex"
+
+search: 
+  path: search.xml
+field: post;

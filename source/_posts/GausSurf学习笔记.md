@@ -7,6 +7,8 @@ categories: 视觉重建
 excerpt: "GausSurf: Geometry-Guided 3D Gaussian Splatting for Surface Reconstruction"
 ---
 
+<p align="center">{% asset_img gaussurf.png %}</p>
+
 # 相关文档
 * 项目链接：https://jiepengwang.github.io/GausSurf/
 * 代码链接：https://github.com/jiepengwang/GausSurf
@@ -27,19 +29,38 @@ excerpt: "GausSurf: Geometry-Guided 3D Gaussian Splatting for Surface Reconstruc
 
 * 总结文章的贡献：
     - 整合了传统的MVS中的PatchMatch方法和法线先验信息，增强重建保真度和计算效率；
-
 # Related Work
-- 作者提到一篇：[Gsdf: 3dgs meets sdf for improved rendering and reconstruction](https://arxiv.org/pdf/2403.16964)，是把SDF和3DGS结合起来的文章，可以关注一下。
-
+* 作者提到一篇：[Gsdf: 3dgs meets sdf for improved rendering and reconstruction](https://arxiv.org/pdf/2403.16964)，是把SDF和3DGS结合起来的文章，可以关注一下。
 # Method
 
 ## 基于PatchMatch的几何引导
 
-- 文章提出了一种reginement and supervision scheme方法，主要是用MVS的几何指导来优化高斯，同时生成更准确的深度和法线图，用于后续MVS优化时的先验。
-- 具体来说，
+* 文章提出了一种reginement and supervision scheme方法，主要是用MVS的几何指导来优化高斯，同时生成更准确的深度和法线图，用于后续MVS优化时的先验。
+* 具体来说，
     - 首先根据超参数（训练步数），先预训练一版高斯函数，作为初始化。
     - 然后，为所有的训练图像渲染深度图和法线图，然后把这些渲染后的结果送到PatchMatch算法中，进行细化，得到更精确的深度和法线图。
     - 接下来，这些细化之后的图像再送到高斯模型里，优化指定步数。
     - 迭代的重复这个过程，直到优化收敛。
 <p align="center">{% asset_img patchmatch_based.png %}</p>
 
+* **PatchMatch细化** 从高斯函数中提取深度和法线图。首先把图像中每一个像素的深度和法线方向歘博导其相邻的像素上，按照从上到下，从左到右的顺序。然后对于每一个传播后的像素，使用其本身的深度-法线对和传播后的深度法线对，得到其与相邻视图的块相似度（NCC），然后保留具有更高块相似度的深度法线对。传播后的深度和发现方向会用随机噪声来增强。在传播和patchmatch之后，在做额外的几何验证，来检查不同图像的深度和法线图之间的一致性。 **如果不同视图之间的深度或法线差异大于预先制定的阈值，则该深度或法线将视为不可靠，并从此轮的细化结果中删除。** 整个PatchMatch过层根据相邻视图之间的块一致性来细化深度图，从而大大提高了深度质量。
+
+* **深度监督** PatchMatch之后的深度图用来监督高斯函数的优化，使用L1 loss计算：
+$$
+\mathcal{l}_d = \sum |d_p - d_i|
+$$
+
+## 基于法线先验的几何引导
+
+* 作者发现在光滑的表面区域，法线先验可以提供高质量的估计，但是在尖锐特征的地方就会给出太过于平滑的估计，这和PatchMatch正好相反，PatchMatch在边缘可以提供高质量的估计。这里的法线估计方法是用的：[Stablenormal: Reducing diffusion variance for stable and sharp normal](https://stable-x.github.io/StableNormal/)
+<p align="center">{% asset_img normal_prior.png %}</p>
+
+## Loss设计和表面提取
+
+* loss共分为三类：颜色loss，深度loss，法线loss，深度和法线一致性loss。
+* 表面提取沿用的TSDF
+# Experiment
+
+<p align="center">{% asset_img result_1.png %}</p>
+
+<p align="center">{% asset_img result.png %}</p>
