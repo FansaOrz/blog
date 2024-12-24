@@ -77,7 +77,7 @@ excerpt: Transformer介绍
 
 - NLP 神经网络模型的本质就是对输入文本进行编码，常规的做法是首先对句子进行分词，然后将每个词语(token)都转化为对应的词向量（token embedding），这样文本就有转换为一个由词语向量组成的矩阵$\boldsymbol{X} = (\boldsymbol{x}_1, \boldsymbol{x}_2, \cdots, \boldsymbol{x}_n)$，其中$\boldsymbol{x}_i$表示第$i$个词语的词向量，维度为$d$，故$\boldsymbol{X}$的维度为$\boldsymbol{X} \in \mathbb{R}^{n \times d}$。
 
-- 《Attention is All You Need》**直接使用 Attention 机制编码整个文本**。相比 RNN 要逐步递归才能获取全局信息，而 CNNN 只能获取局部信息，需要通过层叠来增大感受野，Attention 机制一步到位获取了全局信息：
+- 《Attention is All You Need》**直接使用 Attention 机制编码整个文本**。相比 RNN 要逐步递归才能获取全局信息，而 CNN 只能获取局部信息，需要通过层叠来增大感受野，Attention 机制一步到位获取了全局信息：
 
 $$
 \boldsymbol{y}_t = f(\boldsymbol{x}_t, \boldsymbol{A}, \boldsymbol{B})
