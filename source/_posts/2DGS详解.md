@@ -108,6 +108,7 @@ $$
 ### 退化解 (Degenerate Solutions)
 
 - 当二维高斯从倾斜角度观察时，在屏幕空间中可能会退化为一条线。这意味着在光栅化过程中，高斯分布可能会被忽略，从而导致渲染结果的精度降低。为了处理这种情况，论文引入了一个低通滤波器来稳定优化过程。具体方法如下：
+
   - 最大值滤波器：定义了一个新的高斯值$\hat{\mathcal{G}}(\mathrm{x})=\max \left\{\mathcal{G}(\mathbf{u}(\mathrm{x})), \mathcal{G}\left(\frac{\mathrm{x}-\mathbf{c}}{\sigma}\right)\right\}$，它取原始高斯值$\mathcal{G}(\mathbf{u}(x))$和低通滤波器值$\mathcal{G}\left(\frac{\mathbf{x}-\mathbf{c}}{\sigma}\right)$的最大值。这样可以确保即使在退化情况下，二维高斯分布仍然能被正确处理。
 
   - 其中,$u(\mathbf{x})$由上面的方程解给出，c 是中心$boldsymbol{p}_k$的投影。直观地说，$\hat{\mathcal{G}}(x)$由固定的屏幕空间高斯低通滤波器限定，该滤波器的中心为 ck 且半径为 σ，在实验中，作者设置$\sigma=\sqrt{2} / 2$以确保在渲染过程中使用足够的像素。
@@ -128,7 +129,7 @@ $$
   \mathcal{L}_d=\sum_{i, j} \omega_i \omega_j\left|z_i-z_j\right|
   $$
 
-## 法线一致性(Normal Consistency) loss
+### 法线一致性(Normal Consistency) loss
 
 - 问题：在渲染过程中，如果二维高斯分布的法线（指向相机的方向）不一致，会导致表面不光滑，看起来不自然。特别是在处理半透明表面时，这个问题会更明显。
 
