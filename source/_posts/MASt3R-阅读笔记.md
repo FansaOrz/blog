@@ -72,7 +72,7 @@ $$
 * 最后每个窗口对独立进行匹配，并所有窗口的匹配集合起来，得到最终全图的匹配对。
 
 # Experiment
-* 作者用了14个数据集来训练，包括[Habitat](),[ARKitScenes](),[Blended](),[MVS](),[MegaDepth](),[Static Scenes 3D](),[ScanNet++](),[CO3D-v2](),[Waymo](),[Mapfree](),[WildRgb](),[VirtualKitti](),[Unreal4K](),[TartanAir]()和一个内部的数据集，包含了室内、室外、合成、真实世界、以物体为中心等数据。
+* 作者用了14个数据集来训练，包括[Habitat](https://aihabitat.org/),[ARKitScenes](https://github.com/apple/ARKitScenes),[Blended MVS](https://github.com/YoYo000/BlendedMVS),[MegaDepth](https://github.com/zhengqili/MegaDepth),[Static Scenes 3D](https://arxiv.org/pdf/1512.02134),[ScanNet++](https://github.com/scannetpp/scannetpp),[CO3D-v2](https://github.com/facebookresearch/co3d),[Waymo](https://arxiv.org/pdf/1912.04838),[Mapfree](https://github.com/nianticlabs/map-free-reloc),[WildRgb](https://wildrgbd.github.io/),[VirtualKitti](https://europe.naverlabs.com/research/computer-vision/proxy-virtual-worlds-vkitti-1/),[Unreal4K](https://github.com/fabiotosi92/SMD-Nets),[TartanAir](https://arxiv.org/pdf/2003.14338)和一个内部的数据集，包含了室内、室外、合成、真实世界、以物体为中心等数据。
 * 用DUSt3R的权重初始化MASt3R。并且每个epoch随机选择65万个样本进行训练，共训练了35个epoch，学习率设置为0.0001。
 * 训练时，每个图片初始化4096个对应像素，如果一组图片中找不到这么多像素对，就随机用错误的对应关系来填充。
 * 最后，找到24维向量之间的最近邻关系，用K-d tree会非常慢，因此使用的是一个加速的库[FAISS](https://github.com/facebookresearch/faiss)
