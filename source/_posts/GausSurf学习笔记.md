@@ -1,5 +1,5 @@
 ---
-title: GausSurf学习笔记
+title: GausSurf学习笔记（重建过程中引入MVS的patch match方法，和3dgs互相促进效果）
 date: 2024-12-07 23:56:57
 tags: [视觉重建, 机器学习, MLP, 论文解读]
 math: true

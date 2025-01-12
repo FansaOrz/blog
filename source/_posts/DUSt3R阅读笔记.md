@@ -1,6 +1,6 @@
 ---
 layout: post
-title: DUSt3R阅读笔记
+title: DUSt3R阅读笔记（COLMAP的端到端版本）
 date: 2025-01-05 20:36:08
 tags: [视觉重建, 机器学习, MLP, Transformer, 深度学习, 论文解读]
 math: true
@@ -53,18 +53,19 @@ $$
 
 * 同时由于尺度问题，需要添加一个缩放因子，将预测点和真实点进行归一化， 表示为有笑点到原点的平均距离
 $$
-\operatorname{norm}\left(X^1, X^2\right)=\frac{1}{\left|\mathcal{D}^1\right|+\left|\mathcal{D}^2\right|} \sum_{v \in\{1,2\}} \sum_{i \in \mathcal{D}^v}\left\|X_i^v\right\|
+\operatorname{norm}\left(X^1, X^2\right)=\frac{1}{\left|\mathcal{D}^1\right|+\left|\mathcal{D}^2\right|} \sum_{v \in\{1, 2\}} \sum_{i \in \mathcal{D}^v}\left\|X_i^v\right\|
 $$
-
 
 ## 置信度Loss
-- 作者这里假设了每个像素只对应一个3D点，但实际情况并非如此，对于天空或者玻璃就不适用，因此额外添加了一个置信度参数。这里的loss主要是和所有有效像素的欧式距离的Loss有关：
+
+* 作者这里假设了每个像素只对应一个3D点，但实际情况并非如此，对于天空或者玻璃就不适用，因此额外添加了一个置信度参数。这里的loss主要是和所有有效像素的欧式距离的Loss有关：
 $$
-\mathcal{L}_{\mathrm{conf}}=\sum_{v \in\{1,2\}} \sum_{i \in \mathcal{D}^v} C_i^{v, 1} \ell_{\mathrm{regr}}(v, i)-\alpha \log C_i^{v, 1}
+\mathcal{L}_{\mathrm{conf}}=\sum_{v \in\{1, 2\}} \sum_{i \in \mathcal{D}^v} C_i^{v, 1} \ell_{\mathrm{regr}}(v, i)-\alpha \log C_i^{v, 1}
 $$
 
 # 效果
+
 <p align="center">{% asset_img result_01.png %}</p>
 
 # 后续改进论文
-- 待填坑：[Grounding Image Matching in 3D with MASt3R](https://github.com/naver/mast3r)
+* 待填坑：[Grounding Image Matching in 3D with MASt3R](https://github.com/naver/mast3r)

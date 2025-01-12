@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ViT阅读笔记(An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale)"
+title: "ViT阅读笔记（Transformer在计算机视觉领域中的应用）"
 date: 2025-01-12 12:04:01
 tags: [机器学习, 深度学习, 计算机视觉, 论文解读, Transformer]
 math: true

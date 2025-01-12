@@ -1,6 +1,6 @@
 ---
 layout: post
-title: GSDF阅读笔记
+title: GSDF阅读笔记（将重建分成SDF和3DGS两个子模块，互相促进）
 date: 2024-12-27 22:54:04
 tags: [视觉重建, 机器学习, MLP, 论文解读]
 math: true
