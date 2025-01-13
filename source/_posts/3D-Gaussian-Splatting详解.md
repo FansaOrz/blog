@@ -11,11 +11,12 @@ excerpt: 3D Gaussian Splatting for Real-Time Radiance Field Rendering. 对3D Gau
 
 ## 3DGS
 
-* 项目链接：https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/
+- 项目链接：https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/
 
-* 代码链接：https://github.com/graphdeco-inria/gaussian-splatting
+- 代码链接：https://github.com/graphdeco-inria/gaussian-splatting
 
-* 论文链接：https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/3d_gaussian_splatting_low.pdf
+- 论文链接：https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/3d_gaussian_splatting_low.pdf
+
 # NeRF 和 3DGS 的区别
 
 <p align="center">{% asset_img nerf_3dgs.png nerf_3dgs %}</p>
@@ -24,33 +25,35 @@ excerpt: 3D Gaussian Splatting for Real-Time Radiance Field Rendering. 对3D Gau
 
 ## 定义
 
-* 一种体渲染的方法：从 3D 物体渲染到 2D 平面
+- 一种体渲染的方法：从 3D 物体渲染到 2D 平面
 
-* Ray-casting 是被动的（NeRF）
+- Ray-casting 是被动的（NeRF）
 
-  + 计算出每个像素点受到发光粒子的影响来生成图像
+  - 计算出每个像素点受到发光粒子的影响来生成图像
 
-* Splatting 是主动的
+- Splatting 是主动的
 
-  + 计算出每个发光粒子如何影响像素点
+  - 计算出每个发光粒子如何影响像素点
+
 # 为什么选择 3D 高斯椭球
-* 很好的数学性质
 
-  + 仿射变换后高斯核仍然闭合
+- 很好的数学性质
 
-  + 3D 降维到 2D 后（沿着某一个轴积分（z 轴））仍然为高斯
+  - 仿射变换后高斯核仍然闭合
 
-* 定义：
+  - 3D 降维到 2D 后（沿着某一个轴积分（z 轴））仍然为高斯
 
-  + 椭球高斯函数：
+- 定义：
+
+  - 椭球高斯函数：
 
 $$G(x) = \frac{1}{\sqrt{2\pi^k|\Sigma|}}e^{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)}$$
 
-  - 其中$\Sigma$表示协方差矩阵，半正定，$|\Sigma|$是其行列式，$\mu$表示均量
+- 其中$\Sigma$表示协方差矩阵，半正定，$|\Sigma|$是其行列式，$\mu$表示均量
 
 ## 3D gaussian 为什么是椭球？
 
-* 对于椭球高斯函数：$G(x) = \frac{1}{\sqrt{2\pi^k|\Sigma|}}e^{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)}$来说，${\sqrt{2\pi^k|\Sigma|}}$始终是一个常数，变量只存在于${-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)}$中，当${(x-\mu)^T\Sigma^{-1}(x-\mu)}=constant$时，其可以展开为
+- 对于椭球高斯函数：$G(x) = \frac{1}{\sqrt{2\pi^k|\Sigma|}}e^{-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)}$来说，${\sqrt{2\pi^k|\Sigma|}}$始终是一个常数，变量只存在于${-\frac{1}{2}(x-\mu)^T\Sigma^{-1}(x-\mu)}$中，当${(x-\mu)^T\Sigma^{-1}(x-\mu)}=constant$时，其可以展开为
 
 $$
 \begin{align}
@@ -62,9 +65,10 @@ constant &= (x-\mu)^T\Sigma^{-1}(x-\mu) \\
 
 equal \quad to:          Ax^2+By^2+Cz^2+2Dxy+2Exz+2Fyz=1
 
+
 $$
 
-其中, 
+其中,
 
 $$
 \Sigma = \begin{pmatrix}
@@ -80,40 +84,41 @@ $$
 
 **对应于 cuda 代码中的 computeConv3D**
 
-* 高斯分布：
-  + $\boldsymbol{x}\sim N(\mu, \Sigma)$
+- 高斯分布：
 
-  + 均值：$\mu_x, \mu_y, \mu_z$
+  - $\boldsymbol{x}\sim N(\mu, \Sigma)$
 
-  + 协方差矩阵：$\Sigma = \begin{pmatrix}
+  - 均值：$\mu_x, \mu_y, \mu_z$
+
+  - 协方差矩阵：$\Sigma = \begin{pmatrix}
   \sigma*x^2 & \sigma*{xy} & \sigma*{xz} \\
   \sigma*{yx} & \sigma*y^2 & \sigma*{yz} \\
   \sigma*{zx} & \sigma*{zy} & \sigma_z^2
   \end{pmatrix}$
 
-* 高斯分布的仿射变换：
+- 高斯分布的仿射变换：
 
-  + $\boldsymbol{w} = A\boldsymbol{x}+b$
+  - $\boldsymbol{w} = A\boldsymbol{x}+b$
 
-  + $\boldsymbol{w} \sim N(A\mu+b, A\Sigma A^T)$
+  - $\boldsymbol{w} \sim N(A\mu+b, A\Sigma A^T)$
 
-  + 协方差和 b 没有关系
+  - 协方差和 b 没有关系
 
-* 标准高斯分布：
+- 标准高斯分布：
 
-  + $\boldsymbol{x} \sim N(\bold{0}, I)$
+  - $\boldsymbol{x} \sim N(\bold{0}, I)$
 
-  + 均值：$\bold{0}$
+  - 均值：$\bold{0}$
 
-  + 协方差矩阵：$\boldsymbol{\Sigma} = \begin{pmatrix}
+  - 协方差矩阵：$\boldsymbol{\Sigma} = \begin{pmatrix}
     1 & 0 & 0 \\
     0 & 1 & 0 \\
     0 & 0 & 1
     \end{pmatrix}$
 
-  + $\boldsymbol{\Sigma} = \boldsymbol{A} \cdot \boldsymbol{I} \cdot \boldsymbol{A}^T$ **任意高斯可以看作是标准高斯通过仿射变换得到**
+  - $\boldsymbol{\Sigma} = \boldsymbol{A} \cdot \boldsymbol{I} \cdot \boldsymbol{A}^T$ **任意高斯可以看作是标准高斯通过仿射变换得到**
 
-* $\boldsymbol{A}=RS$，其中$\boldsymbol{R}$是旋转矩阵，$\boldsymbol{S}$是缩放矩阵，因此
+- $\boldsymbol{A}=RS$，其中$\boldsymbol{R}$是旋转矩阵，$\boldsymbol{S}$是缩放矩阵，因此
 
 $$
 \begin{align}
@@ -130,25 +135,25 @@ $$
 
 <p align="center">{% asset_img 3d_viewing_trans.png 3d_viewing_trans %}</p>
 
-* 从世界坐标系到相机坐标系，仿射变换
+- 从世界坐标系到相机坐标系，仿射变换
 
-* $\boldsymbol{w} = \boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$
+- $\boldsymbol{w} = \boldsymbol{A}\boldsymbol{x}+\boldsymbol{b}$
 
 ### 投影变换
 
-* 3D 到 2D
+- 3D 到 2D
 
-* 透视投影，和 Z 轴有关
+- 透视投影，和 Z 轴有关
 
-* 正交投影，和 Z 轴无关
+- 正交投影，和 Z 轴无关
 
 <p align="center">{% asset_img projection.png projection %}</p>
 
 #### 正交投影
 
-* 对于一个立方体$[l, r]\times[b, t]\times[f, n]$，将其平移到原点，然后缩放为$[-1, 1]\times[-1, 1]\times[-1, 1]$的正方体
+- 对于一个立方体$[l, r]\times[b, t]\times[f, n]$，将其平移到原点，然后缩放为$[-1, 1]\times[-1, 1]\times[-1, 1]$的正方体
 
-* 投影矩阵：
+- 投影矩阵：
 
 $$
 \begin{bmatrix}
@@ -169,11 +174,11 @@ $$
 
 #### 透视投影
 
-* 有远小近大的原则，投影出来是一个锥体。因此需要先把锥体压成立方体，然后再进行正交投影
+- 有远小近大的原则，投影出来是一个锥体。因此需要先把锥体压成立方体，然后再进行正交投影
 
 <p align="center">{% asset_img persp_projection.png persp_projection %}</p>
 
-* 透视投影到立体的过程：
+- 透视投影到立体的过程：
 
 $$
 \boldsymbol{M}_{persp->ortho} =
@@ -185,11 +190,11 @@ n & 0 & 0 & 0 \\
 \end{bmatrix}
 $$
 
-* **注意：透视投影是非线性的，不是仿射变换**
+- **注意：透视投影是非线性的，不是仿射变换**
 
 ### 视口变换
 
-* 不管是透视投影还是正交投影，最终得到的都是$[-1, 1]^3$范围内的立方体，然后进行视口变换将其映射回图片的大小 height \* width，恢复出原始比例
+- 不管是透视投影还是正交投影，最终得到的都是$[-1, 1]^3$范围内的立方体，然后进行视口变换将其映射回图片的大小 height \* width，恢复出原始比例
 
 <p align="center">{% asset_img view_point.png view_point %}</p>
 
@@ -209,51 +214,51 @@ $$
 
 ### 第一步：从物理坐标系到相机坐标系
 
-* 物理坐标系：
+- 物理坐标系：
 
-  + 高斯核的中心点：$\boldsymbol{t}_k = [t_x, t_y, t_z]^T$
+  - 高斯核的中心点：$\boldsymbol{t}_k = [t_x, t_y, t_z]^T$
 
-  + 高斯核对应的高斯分布：$r^{, , }_k(t) = G_{V_k^{, , }}(t-t_k)$
+  - 高斯核对应的高斯分布：$r^{, , }_k(t) = G_{V_k^{, , }}(t-t_k)$
 
-  + 其中$V_k^{, , }$是协方差矩阵
+  - 其中$V_k^{, , }$是协方差矩阵
 
-* 相机坐标系：
+- 相机坐标系：
 
-  + 高斯核中心：$\boldsymbol{\mu}_k = [\mu_x, \mu_y, \mu_z]^T$
+  - 高斯核中心：$\boldsymbol{\mu}_k = [\mu_x, \mu_y, \mu_z]^T$
 
-  + 高斯核对应的高斯分布：$r^{, }_k(t) = G_{V_k^{, }}(\mu-\boldsymbol{\mu}_k)$
+  - 高斯核对应的高斯分布：$r^{, }_k(t) = G_{V_k^{, }}(\mu-\boldsymbol{\mu}_k)$
 
-  + 均值：$\boldsymbol{\mu}_k = Wt_k+d$
+  - 均值：$\boldsymbol{\mu}_k = Wt_k+d$
 
-  + 协方差矩阵：$V_k^{, } = WV_k^{, , }W^T$
+  - 协方差矩阵：$V_k^{, } = WV_k^{, , }W^T$
 
-* 这一步就是简单做个仿射变换，3D 空间的坐标变换
+- 这一步就是简单做个仿射变换，3D 空间的坐标变换
 
 ### 第二步：从相机坐标系到像素空间
 
-* 相机坐标系：
+- 相机坐标系：
 
-  + 高斯核中心：$\boldsymbol{\mu}_k = [\mu_x, \mu_y, \mu_z]^T$
+  - 高斯核中心：$\boldsymbol{\mu}_k = [\mu_x, \mu_y, \mu_z]^T$
 
-  + 协方差矩阵：$V_k^{, }
+  - 协方差矩阵：$V_k^{, }
 
-* 投影变换：（非线性的变换，需要做泰勒展开做局部的线性近似）
+- 投影变换：（非线性的变换，需要做泰勒展开做局部的线性近似）
 
-  + 高斯核中心：$\boldsymbol{x}_k = [x_x, x_y, x_z]^T$
+  - 高斯核中心：$\boldsymbol{x}_k = [x_x, x_y, x_z]^T$
 
-  + 高斯核对应的高斯分布：$r_k(t) = G_{V_k}(x-\boldsymbol{x}_k)$
+  - 高斯核对应的高斯分布：$r_k(t) = G_{V_k}(x-\boldsymbol{x}_k)$
 
-  + 均值：$\boldsymbol{x}_k = m(\mu_k)$（对均值可以直接做非线性变换，不需要局部线性近似）
+  - 均值：$\boldsymbol{x}_k = m(\mu_k)$（对均值可以直接做非线性变换，不需要局部线性近似）
 
-  + 协方差矩阵：$V_k = \boldsymbol{J}V_k^{, }\boldsymbol{J}^T$
+  - 协方差矩阵：$V_k = \boldsymbol{J}V_k^{, }\boldsymbol{J}^T$
 
-  + 其中$\boldsymbol{J} = \frac{\partial m(\mu_k)}{\partial \mu}$，雅可比矩阵
+  - 其中$\boldsymbol{J} = \frac{\partial m(\mu_k)}{\partial \mu}$，雅可比矩阵
 
-  + 至此，协方差矩阵$V_k = \boldsymbol{J}WV_k^{, , }W^T\boldsymbol{J}^T$
+  - 至此，协方差矩阵$V_k = \boldsymbol{J}WV_k^{, , }W^T\boldsymbol{J}^T$
 
 #### 如何求得雅可比矩阵？
 
-* 已知：
+- 已知：
 
 $$
 \boldsymbol{M}_{persp->ortho} =
@@ -265,7 +270,7 @@ n & 0 & 0 & 0 \\
 \end{bmatrix}
 $$
 
-* 视锥中一个点:$[x y z 1]^T$对其应用投影变换后：
+- 视锥中一个点:$[x y z 1]^T$对其应用投影变换后：
 
 $$
 \begin{bmatrix}
@@ -299,9 +304,10 @@ z
 1
 \end{bmatrix}
 
+
 $$
 
-* 由此，雅可比矩阵为：
+- 由此，雅可比矩阵为：
 
 $$
 \boldsymbol{J} =
@@ -325,11 +331,11 @@ $$
 
 ### 球谐函数介绍
 
-* 任何一个球面坐标的函数，都可以用多个球谐函数来近似
+- 任何一个球面坐标的函数，都可以用多个球谐函数来近似
 
-* $f(t) \approx \sum_l\sum^l_{m=-l}c_l^my_l^m(\theta, \phi)$
+- $f(t) \approx \sum_l\sum^l_{m=-l}c_l^my_l^m(\theta, \phi)$
 
-* 其中，$l$表示当前的阶数，$c_l^m$是各项系数，$y_l^m$是基函数
+- 其中，$l$表示当前的阶数，$c_l^m$是各项系数，$y_l^m$是基函数
 
 <p align="center">{% asset_img sh.png sh %}</p>
 
@@ -343,7 +349,7 @@ f(t) &\approx \sum_l\sum^l_{m=-l}c_l^my_l^m(\theta, \phi) \\
 \end{align}
 $$
 
-* 其中各个基函数为：
+- 其中各个基函数为：
 
 $$
 y_0^0 = \sqrt{\frac{1}{4\pi}} \\
@@ -352,7 +358,7 @@ y_1^{0} = \sqrt{\frac{3}{4\pi}}\frac{z}{r}\\
 ... \\
 $$
 
-* 由此，当 xyz 固定时，基函数就是固定的，但是系数是变化的。当系数维度为 3 时，共有 16 个系数，**即一个高斯球，有 16 个颜色系数要估计**
+- 由此，当 xyz 固定时，基函数就是固定的，但是系数是变化的。当系数维度为 3 时，共有 16 个系数，**即一个高斯球，有 16 个颜色系数要估计**
 
 ## 使用$\alpha$ -blending 计算像素的颜色
 
@@ -366,19 +372,36 @@ C &= T_i \alpha_i c_i \\
 where: T_i = r^{-\sum_{j=1}^{i-1}\sigma_i\delta_j}
 $$
 
-* 其中：
+- 其中：
 
-  + $T_i$：在 s 点之前，光线没有被阻挡的概率
+  - $T_i$：在 s 点之前，光线没有被阻挡的概率
 
-  + $\alpha_i$：在 s 点处，光线被遮挡的概率。包含两点：1. 高斯椭球本身的不透明度；2. 该像素点距离高斯椭球中心越远，高斯椭球对其影响越小
+  - $\alpha_i$：在 s 点处，光线被遮挡的概率。包含两点：1. 高斯椭球本身的不透明度；2. 该像素点距离高斯椭球中心越远，高斯椭球对其影响越小
 
-  + $c_i$：在 s 点处，高斯球的颜色。即通过球谐函数近似得到的颜色
+  - $c_i$：在 s 点处，高斯球的颜色。即通过球谐函数近似得到的颜色
 
 **注意，此时是在 2D 平面上计算像素值**
 
-* 当一轮迭代之后，参数都固定了，此时就可以计算像素的颜色值。3D 高斯在投影到 2D 平面上后，还是一个高斯分布。利用之前的理论，当${(x-\mu)^T\Sigma^{-1}(x-\mu)}=constant$时，在二维上表现为一个椭圆：$\frac{(x-\mu_1)^2}{\sigma_1^2} + \frac{(y-\mu_2)^2}{\sigma_2^2} - \frac{2\sigma_{xy}(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2} = constant$。此时$\mu_1$和$\mu_2$为高斯中心点在像素平面上的坐标，$\sigma_1$和$\sigma_2$为二维高斯协方差矩阵对角线上的元素。
+- 当一轮迭代之后，参数都固定了，此时就可以计算像素的颜色值。3D 高斯在投影到 2D 平面上后，还是一个高斯分布。利用之前的理论，当${(x-\mu)^T\Sigma^{-1}(x-\mu)}=constant$时，在二维上表现为一个椭圆：$\frac{(x-\mu_1)^2}{\sigma_1^2} + \frac{(y-\mu_2)^2}{\sigma_2^2} - \frac{2\sigma_{xy}(x-\mu_1)(y-\mu_2)}{\sigma_1\sigma_2} = constant$。此时$\mu_1$和$\mu_2$为高斯中心点在像素平面上的坐标，$\sigma_1$和$\sigma_2$为二维高斯协方差矩阵对角线上的元素。
+
+# 高斯椭球的自适应密度控制
+
+- 这里使用 α 值来调控高斯函数的数量，以防止在优化过程中创建过多的高斯函数。α 值的调整基于一个预定义的阈值，当高斯函数的数量超过这个阈值时，就会使用剔除机制来移除那些贡献较小的高斯函数。(这里可以仔细在源码里找找）
+
+- 此外，为了处理小规模几何结构的不足重建问题，采用了复制（在重建不足的区域）和分裂（在过度重建的区域）高斯函数的策略。这些操作使得优化过程能够更精细地调整高斯函数的分布，以更精确地匹配场景的几何结构。具体地，这个过程包括以下步骤：
+
+  - 在重建不足的区域，如果小尺度的几何特征没有被足够覆盖，算法会克隆现有的高斯函数，即复制一个相同的高斯函数以增加局部密度，从而更好地捕捉细微的细节。
+  - 对于过度重建的区域，如果小尺度的几何被一个大的高斯函数所覆盖，算法会将其分裂为两个较小的高斯函数，这样可以减少单一高斯函数覆盖过多细节的情况，避免模糊和不必要的重叠。
+
+- 这种自适应的密度控制策略不仅可以增加细节的丰富性，也有助于避免过多的高斯函数对计算资源的消耗。α 值的动态调整和高斯函数的合理分布，使得模型在不同的迭代中逐渐收敛，最终得到一个既紧凑又精确的 3D 场景表示。
+
+- 优化过程中，通过增加 α 值来提高某些高斯函数的重要性，同时允许采用剔除方法来移除那些低于预设 α 阈值的高斯函数。尽管高斯函数可能会随着优化过程中的调整而增大或缩小，并与其他高斯函数产生重叠，但作者定期进行重建和调整，以确保在视觉空间中保留有重要贡献的高斯函数，同时优化整体的几何表现。
+
+- 通过这种方法，3D Gaussians 作为欧几里得空间中的基元，在所有时间内都保持一致，与其他方法（如基于投影或扭曲的策略处理大型高斯函数的方法）相比，这种方法避免了复杂的变换，使得渲染过程更加直接和高效。
+
 # 代码解析
-* 已添加注释到：https://github.com/FansaOrz/gaussian-splatting
+
+- 已添加注释到：https://github.com/FansaOrz/gaussian-splatting
 
 ## diff-gaussian-rasterization 解析
 
@@ -386,7 +409,7 @@ $$
 
 ### 预处理
 
-* 批量并行处理高斯点，为光栅化做准备
+- 批量并行处理高斯点，为光栅化做准备
 
 ```C++
 // 共划分了P/256个线程块，每个线程块包含256个线程
@@ -425,10 +448,10 @@ __global__ void preprocessCUDA(int P, int D, int M,
 
 ## 名词解释：
 
-* EWA:
-* NDC 坐标系：Normalized Device Coordinates，标准化设备坐标系
-* footprint（足迹）：椭球投影到 2D 平面上的扩散
-* NVS: novel view synthesis，新视角合成
+- EWA:
+- NDC 坐标系：Normalized Device Coordinates，标准化设备坐标系
+- footprint（足迹）：椭球投影到 2D 平面上的扩散
+- NVS: novel view synthesis，新视角合成
 
 ## 常见疑问
 
@@ -442,6 +465,7 @@ __global__ void preprocessCUDA(int P, int D, int M,
    - 感觉应该是 splatting 在投影矩阵之后的那个空间里做，点要做视口变换是为了和后面的像素匹配，做后面的 tile 渲染
 
 # 参考文档
-* [b 站视频：【较真系列】讲人话-3d gaussian splatting 全解(原理+代码+公式)](https://www.bilibili.com/video/BV1zi421v7Dr?spm_id_from=333.788.player.switch&vd_source=9629687338410a5ccaa5e1a595d0f17d)
 
-* [A Survey on 3D Gaussian Splatting](https://arxiv.org/pdf/2401.03890)
+- [b 站视频：【较真系列】讲人话-3d gaussian splatting 全解(原理+代码+公式)](https://www.bilibili.com/video/BV1zi421v7Dr?spm_id_from=333.788.player.switch&vd_source=9629687338410a5ccaa5e1a595d0f17d)
+
+- [A Survey on 3D Gaussian Splatting](https://arxiv.org/pdf/2401.03890)
