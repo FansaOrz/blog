@@ -1,3 +1,18 @@
+---
+layout: post
+title: 4DRotorGS阅读笔记（Rotor表示4D空间旋转的动态场景重建方法）
+date: 2025-01-22 22:38:47
+math: true
+categories: 视觉重建
+excerpt: "4D-Rotor Gaussian Splatting: Towards Efficient Novel View Synthesis for Dynamic Scenes"
+---
+- 项目链接：https://weify627.github.io/4drotorgs/
+
+- 代码链接：https://github.com/weify627/4D-Rotor-Gaussians
+
+- 论文链接：https://arxiv.org/abs/2402.03307
+
+
 # Introduction
 
 - 当前的 3D 场景重建主要分为静态和动态两种场景，动态场景由于物体运动的原因，导致 NVS 的效果都比较差。
