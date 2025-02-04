@@ -65,19 +65,18 @@ $$
 
 <p align="center">{% asset_img cross_01.png %}</p>
 
-- SoftMax
+* SoftMax
 
 <p align="center">{% asset_img cross_02.png %}</p>
 
-- 最后是和V相乘，这里可以理解为每个像素，对于每个token的关注度，或者参考的权重值是多少。
+* 最后是和V相乘，这里可以理解为每个像素，对于每个token的关注度，或者参考的权重值是多少。
 
 <p align="center">{% asset_img cross_03.png %}</p>
 
-- 使用$W^{out}$来把cross-attention的结果映射回原始的图像维度。
+* 使用$W^{out}$来把cross-attention的结果映射回原始的图像维度。
 
 <p align="center">{% asset_img cross_04.png %}</p>
 
-- 再和输入的图像相加，得到最终的输出。
-
+* 再和输入的图像相加，得到最终的输出。
 # 参考文档
 * [动画解释 Self Attention & Cross Attention](https://www.bilibili.com/video/BV1Ke411X7t7/?spm_id_from=333.337.search-card.all.click&vd_source=9629687338410a5ccaa5e1a595d0f17d)

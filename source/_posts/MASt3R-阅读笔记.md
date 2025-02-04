@@ -78,3 +78,6 @@ $$
 * 最后，找到24维向量之间的最近邻关系，用K-d tree会非常慢，因此使用的是一个加速的库[FAISS](https://github.com/facebookresearch/faiss)
 
 <p align="center">{% asset_img result.png %}</p>
+
+## 实测数据
+<p align="center">{% asset_img chair.png %}</p>
