@@ -1,6 +1,6 @@
 ---
 layout: post
-title: CLIP论文阅读笔记
+title: CLIP论文阅读笔记（力大转飞的视觉-文本多模态网络）
 date: 2025-02-01 17:13:03
 tags: [机器学习, 深度学习, 计算机视觉, 论文解读, Transformer, 多模态, 图片分类]
 math: true

@@ -1,11 +1,11 @@
 ---
 layout: post
-title: High-Quality Surface Reconstruction using Gaussian Surfels 阅读笔记
+title: HQSR-GS阅读笔记（压扁3DGS使其更好重建物体几何信息）
 date: 2025-01-28 16:20:14
 tags: [视觉重建, 机器学习, MLP, 深度学习, 论文解读]
 math: true
 categories: 视觉重建
-excerpt: "DUSt3R: Geometric 3D Vision Made Easy 数据驱动的重建方法"
+excerpt: "High-Quality Surface Reconstruction using Gaussian Surfels"
 ---
 
 <p align="center">{% asset_img cover.png %}</p>
