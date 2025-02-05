@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PGSR阅读笔记
+title: PGSR阅读笔记（深度无偏估计+多视角一致性）
 date: 2025-02-02 20:14:35
 tags: [视觉重建, 机器学习, MLP, 深度学习, 论文解读]
 math: true
